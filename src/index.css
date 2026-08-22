@@ -242,3 +242,41 @@ code,
   margin-bottom: 12px;
   font-size: 13px;
 }
+
+.node-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.node-status-card {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--offline);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.sparkline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.sparkline-card {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.sparkline-card:hover {
+  border-color: var(--text-faint);
+}
+
+.sparkline-card.selected {
+  border-color: var(--accent);
+}

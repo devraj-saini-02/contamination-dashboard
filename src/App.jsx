@@ -1,5 +1,6 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 
+import AnalysisView from "./views/AnalysisView";
 import IncidentDetailView from "./views/IncidentDetailView";
 import IncidentsView from "./views/IncidentsView";
 import ModelRegistryView from "./views/ModelRegistryView";
@@ -9,6 +10,7 @@ import SimulationControlView from "./views/SimulationControlView";
 
 const NAV_ITEMS = [
   { to: "/", label: "Network Map", end: true },
+  { to: "/analysis", label: "Analysis Dashboard" },
   { to: "/incidents", label: "Incidents" },
   { to: "/sensor-health", label: "Sensor Health" },
   { to: "/models", label: "Model Registry" },
@@ -29,6 +31,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<NetworkMapView />} />
+          <Route path="/analysis" element={<AnalysisView />} />
           <Route path="/incidents" element={<IncidentsView />} />
           <Route path="/incidents/:id" element={<IncidentDetailView />} />
           <Route path="/sensor-health" element={<SensorHealthView />} />

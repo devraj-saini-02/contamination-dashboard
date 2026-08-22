@@ -81,6 +81,7 @@ function StartStopForm({ busy, running, onStart, onStop }) {
   const [nodeCount, setNodeCount] = useState(15);
   const [simTimeScale, setSimTimeScale] = useState(120);
   const [seed, setSeed] = useState(42);
+  const [autoInjectDemoEvents, setAutoInjectDemoEvents] = useState(true);
 
   return (
     <div>
@@ -96,9 +97,26 @@ function StartStopForm({ busy, running, onStart, onStop }) {
         <label>Seed</label>
         <input type="number" value={seed} onChange={(e) => setSeed(+e.target.value)} disabled={running} />
       </div>
+      <div className="row" style={{ marginBottom: 12 }}>
+        <input
+          type="checkbox"
+          id="auto-inject"
+          checked={autoInjectDemoEvents}
+          onChange={(e) => setAutoInjectDemoEvents(e.target.checked)}
+          disabled={running}
+          style={{ width: "auto" }}
+        />
+        <label htmlFor="auto-inject" className="text-dim" style={{ fontSize: 12 }}>
+          Auto-inject demo contamination events (guarantees WARN/RED nodes + alerts shortly after start)
+        </label>
+      </div>
       <div className="row">
         {!running ? (
-          <button className="primary" disabled={busy} onClick={() => onStart({ node_count: nodeCount, sim_time_scale: simTimeScale, seed })}>
+          <button
+            className="primary"
+            disabled={busy}
+            onClick={() => onStart({ node_count: nodeCount, sim_time_scale: simTimeScale, seed, auto_inject_demo_events: autoInjectDemoEvents })}
+          >
             Start
           </button>
         ) : (

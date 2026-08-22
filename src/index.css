@@ -243,6 +243,28 @@ code,
   font-size: 13px;
 }
 
+/* Animated dash pattern along drain-edge polylines -- decreasing stroke-dashoffset shifts the
+   pattern in the direction the path was drawn (parent -> child, i.e. downstream), giving a
+   continuous "water is moving through here" cue instead of a static line. Leaflet renders
+   polylines as SVG <path> elements, so this targets that directly via pathOptions.className. */
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+.flow-edge {
+  animation: flow-dash 1.1s linear infinite;
+}
+
+.flow-edge-slow {
+  animation: flow-dash 2.6s linear infinite;
+}
+
+.flow-edge-fast {
+  animation: flow-dash 0.55s linear infinite;
+}
+
 .node-status-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

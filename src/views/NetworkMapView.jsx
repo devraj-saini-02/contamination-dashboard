@@ -7,7 +7,7 @@ import StatusPill from "../components/StatusPill";
 import { colorForStatus } from "../components/status";
 
 const POLL_MS = 4000;
-const DELHI_CENTER = [28.6, 77.15];
+const DELHI_CENTER = [28.6, 77.03]; // roughly the Najafgarh drain corridor -- see world.py
 const STATE_RANK = { SAFE: 0, WARN: 1, RED: 2 };
 
 function worstContaminantState(detail) {
@@ -90,7 +90,8 @@ export default function NetworkMapView() {
                   pathOptions={{
                     color: e.validated ? "#3b82f6" : "#5b6b7f",
                     weight: e.validated ? 3 : 2,
-                    dashArray: e.validated ? undefined : "4 5",
+                    dashArray: e.validated ? "10 8" : "4 5",
+                    className: e.validated ? "flow-edge" : "flow-edge-slow",
                   }}
                 >
                   <Tooltip sticky>

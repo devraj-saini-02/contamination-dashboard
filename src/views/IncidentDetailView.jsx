@@ -116,7 +116,7 @@ export default function IncidentDetailView() {
   const centerPts = nodeIds.map((nid) => positions[nid]).filter(Boolean);
   const center = centerPts.length
     ? [centerPts.reduce((s, p) => s + p.lat, 0) / centerPts.length, centerPts.reduce((s, p) => s + p.lon, 0) / centerPts.length]
-    : [28.6, 77.15];
+    : [28.6, 77.03]; // roughly the Najafgarh drain corridor -- see node/simulator/world.py
 
   return (
     <div>
@@ -147,6 +147,7 @@ export default function IncidentDetailView() {
                 const point = nearest(series, sliderMs);
                 const flux = point?.flux_g_s || 0;
                 const frac = Math.min(flux / maxFlux, 1);
+                const flowClass = frac > 0.5 ? "flow-edge-fast" : frac > 0.08 ? "flow-edge" : "flow-edge-slow";
                 return (
                   <Polyline
                     key={key}
@@ -154,7 +155,13 @@ export default function IncidentDetailView() {
                       [p.lat, p.lon],
                       [c.lat, c.lon],
                     ]}
-                    pathOptions={{ color: "#3b82f6", opacity: 0.12 + 0.75 * frac, weight: 2 + 8 * frac }}
+                    pathOptions={{
+                      color: "#3b82f6",
+                      opacity: 0.12 + 0.75 * frac,
+                      weight: 2 + 8 * frac,
+                      dashArray: "10 8",
+                      className: flowClass,
+                    }}
                   >
                     <Tooltip sticky>
                       {parentId} → {childId}: {flux.toFixed(2)} g/s

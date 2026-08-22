@@ -35,6 +35,11 @@ export const getModelsForNode = (nodeId) => request(`/models/${encodeURIComponen
 export const pushModel = (body) => request("/models/push", { method: "POST", body: JSON.stringify(body) });
 export const getSensorHealthEvents = () => request("/sensor-health-events");
 
+// Node registration is keyed by a deterministic node_id (SIM-N001, ...); a fresh simulation run
+// whose nodes land at different coordinates than a previous run doesn't overwrite the old row --
+// it gets renamed and the stale one lingers forever, polluting the map. Call before simStart().
+export const resetTopology = () => request("/admin/reset-topology", { method: "POST" });
+
 // ---- simulation control (§4.6 proxy — still only ever talks to central-system) ----
 
 export const simStart = (body) => request("/simulation/start", { method: "POST", body: JSON.stringify(body) });

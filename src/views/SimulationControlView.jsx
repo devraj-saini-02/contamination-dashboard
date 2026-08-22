@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { simInjectEvent, simInjectFault, simStart, simStatus, simStop } from "../api/client";
+import { resetTopology, simInjectEvent, simInjectFault, simStart, simStatus, simStop } from "../api/client";
 
 const CONTAMINANT_IDS = ["ph", "temperature", "conductivity", "tss", "dissolved_oxygen", "bod", "cod", "ammoniacal_n", "chromium_vi", "urea"];
 const FAULT_TYPES = ["stuck", "dropout", "spike"];
@@ -46,7 +46,17 @@ export default function SimulationControlView() {
       <div className="grid-2">
         <div className="panel stack">
           <StatusReadout status={status} />
-          <StartStopForm busy={busy} running={status?.running} onStart={(body) => withBusy(() => simStart(body))} onStop={() => withBusy(() => simStop())} />
+          <StartStopForm
+            busy={busy}
+            running={status?.running}
+            onStart={(body) =>
+              withBusy(async () => {
+                await resetTopology();
+                await simStart(body);
+              })
+            }
+            onStop={() => withBusy(() => simStop())}
+          />
         </div>
 
         <div className="stack">

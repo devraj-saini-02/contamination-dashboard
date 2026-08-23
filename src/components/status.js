@@ -31,3 +31,24 @@ export function colorForStatus(status) {
 export function labelForStatus(status) {
   return String(status || "unknown").toLowerCase();
 }
+
+// A tinted-pill background can't be built by string-appending an alpha suffix onto a
+// var(--safe)-style value (that's not valid CSS) -- these are separate, pre-mixed tokens instead.
+export function softColorForStatus(status) {
+  switch (status) {
+    case "SAFE":
+    case "active":
+    case "OK":
+      return "var(--safe-soft)";
+    case "WARN":
+    case "SUSPECT":
+      return "var(--warn-soft)";
+    case "RED":
+    case "FAILED":
+      return "var(--red-soft)";
+    case "offline":
+    case "baselining":
+    default:
+      return "var(--offline-soft)";
+  }
+}

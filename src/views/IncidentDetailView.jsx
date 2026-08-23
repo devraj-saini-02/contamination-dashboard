@@ -130,10 +130,10 @@ export default function IncidentDetailView() {
         </span>
       </div>
 
-      <div style={{ display: "flex", gap: 16 }}>
+      <div className="map-layout" style={{ display: "flex", gap: 16 }}>
         <div style={{ flex: 1 }}>
-          <div style={{ height: "56vh", borderRadius: 10, overflow: "hidden", border: "1px solid var(--border)" }}>
-            <MapContainer center={center} zoom={13} style={{ height: "100%", width: "100%", background: "#0b0f14" }}>
+          <div className="map-container-wrap" style={{ height: "56vh", borderRadius: 6, overflow: "hidden", border: "1px solid var(--border)" }}>
+            <MapContainer center={center} zoom={13} style={{ height: "100%", width: "100%", background: "var(--bg)" }}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -156,7 +156,7 @@ export default function IncidentDetailView() {
                       [c.lat, c.lon],
                     ]}
                     pathOptions={{
-                      color: "#3b82f6",
+                      color: "var(--accent)",
                       opacity: 0.12 + 0.75 * frac,
                       weight: 2 + 8 * frac,
                       dashArray: "10 8",
@@ -211,7 +211,7 @@ export default function IncidentDetailView() {
           <ConcentrationChart nodeSeries={nodeSeries} sourceNodeId={sourceNodeId} sliderMs={sliderMs} />
         </div>
 
-        <div style={{ width: 340, flexShrink: 0 }}>
+        <div className="side-panel" style={{ width: 340, flexShrink: 0 }}>
           <CandidateCauseList causes={incident.candidate_causes} />
         </div>
       </div>
@@ -228,18 +228,20 @@ function BackLink() {
 }
 
 function PulsingMarker({ position }) {
+  const reducedMotion = useMemo(() => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches, []);
   const [phase, setPhase] = useState(0);
   useEffect(() => {
+    if (reducedMotion) return; // still-visible, still-persistent highlight -- just not animated
     const id = setInterval(() => setPhase((p) => (p + 0.15) % (Math.PI * 2)), 60);
     return () => clearInterval(id);
-  }, []);
-  const radius = 14 + 5 * Math.sin(phase);
-  const opacity = 0.3 + 0.25 * Math.sin(phase);
+  }, [reducedMotion]);
+  const radius = reducedMotion ? 15 : 14 + 5 * Math.sin(phase);
+  const opacity = reducedMotion ? 0.4 : 0.3 + 0.25 * Math.sin(phase);
   return (
     <CircleMarker
       center={[position.lat, position.lon]}
       radius={radius}
-      pathOptions={{ color: "#ffffff", weight: 2, fillOpacity: opacity, fillColor: "#ffffff" }}
+      pathOptions={{ color: "var(--accent)", weight: 2, fillOpacity: opacity, fillColor: "var(--accent)" }}
       interactive={false}
     />
   );
@@ -257,23 +259,23 @@ function ConcentrationChart({ nodeSeries, sourceNodeId, sliderMs }) {
       </div>
       <ResponsiveContainer width="100%" height={180}>
         <LineChart data={data} margin={{ left: -10, right: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#253040" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis
             dataKey="t"
             type="number"
             domain={["dataMin", "dataMax"]}
             tickFormatter={(v) => new Date(v).toLocaleTimeString()}
-            stroke="#5b6b7f"
+            stroke="var(--text-faint)"
             fontSize={11}
           />
-          <YAxis stroke="#5b6b7f" fontSize={11} width={50} />
+          <YAxis stroke="var(--text-faint)" fontSize={11} width={50} />
           <ChartTooltip
-            contentStyle={{ background: "#1a222e", border: "1px solid #253040", fontSize: 12 }}
+            contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", fontSize: 12 }}
             labelFormatter={(v) => new Date(v).toLocaleString()}
           />
           <Legend wrapperStyle={{ fontSize: 12 }} />
-          <Line type="monotone" dataKey="concentration" stroke="#3b82f6" dot={false} strokeWidth={2} name="concentration" />
-          <ReferenceLine x={sliderMs} stroke="#ffffff" strokeDasharray="4 4" />
+          <Line type="monotone" dataKey="concentration" stroke="var(--accent)" dot={false} strokeWidth={2} name="concentration" />
+          <ReferenceLine x={sliderMs} stroke="var(--text)" strokeDasharray="4 4" />
         </LineChart>
       </ResponsiveContainer>
     </div>

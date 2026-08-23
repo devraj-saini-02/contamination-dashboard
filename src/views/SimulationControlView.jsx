@@ -123,7 +123,7 @@ function StartStopForm({ busy, running, onStart, onStop }) {
       <div className="row">
         {!running ? (
           <button
-            className="primary"
+            className="success"
             disabled={busy}
             onClick={() => onStart({ node_count: nodeCount, sim_time_scale: simTimeScale, seed, auto_inject_demo_events: autoInjectDemoEvents })}
           >

@@ -146,21 +146,21 @@ export default function AnalysisView() {
         )}
         <ResponsiveContainer width="100%" height={280}>
           <LineChart data={selectedSeries} margin={{ left: -10, right: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#253040" />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
             {zonesFor(selected, stats.min - (stats.max - stats.min) * 0.15, stats.max + (stats.max - stats.min) * 0.15).map((z, i) => (
-              <ReferenceArea key={i} y1={z.y1} y2={z.y2} fill={z.color} fillOpacity={0.06} strokeOpacity={0} />
+              <ReferenceArea key={i} y1={z.y1} y2={z.y2} fill={z.color} fillOpacity={0.08} strokeOpacity={0} />
             ))}
             <XAxis
               dataKey="t"
               type="number"
               domain={["dataMin", "dataMax"]}
               tickFormatter={(v) => new Date(v).toLocaleDateString(undefined, { month: "short" })}
-              stroke="#5b6b7f"
+              stroke="var(--text-faint)"
               fontSize={11}
             />
-            <YAxis stroke="#5b6b7f" fontSize={11} width={50} domain={["auto", "auto"]} />
+            <YAxis stroke="var(--text-faint)" fontSize={11} width={50} domain={["auto", "auto"]} />
             <ChartTooltip
-              contentStyle={{ background: "#1a222e", border: "1px solid #253040", fontSize: 12 }}
+              contentStyle={{ background: "var(--bg-panel)", border: "1px solid var(--border)", fontSize: 12 }}
               labelFormatter={(v) => new Date(v).toLocaleDateString()}
               formatter={(value) => [`${value.toFixed(2)} ${selected.unit}`, selected.label]}
             />

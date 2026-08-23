@@ -68,9 +68,12 @@ export default function NetworkMapView() {
         <span className="text-dim">{nodes.length} nodes</span>
       </div>
       {error && <div className="error-banner">Couldn't reach central-system: {error}</div>}
-      <div style={{ display: "flex", gap: 16 }}>
-        <div style={{ flex: 1, height: "calc(100vh - 110px)", borderRadius: 10, overflow: "hidden", border: "1px solid var(--border)" }}>
-          <MapContainer center={center} zoom={13} style={{ height: "100%", width: "100%", background: "#0b0f14" }}>
+      <div className="map-layout" style={{ display: "flex", gap: 16 }}>
+        <div
+          className="map-container-wrap"
+          style={{ flex: 1, height: "calc(100vh - 110px)", borderRadius: 6, overflow: "hidden", border: "1px solid var(--border)" }}
+        >
+          <MapContainer center={center} zoom={13} style={{ height: "100%", width: "100%", background: "var(--bg)" }}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -88,7 +91,7 @@ export default function NetworkMapView() {
                     [c.latitude, c.longitude],
                   ]}
                   pathOptions={{
-                    color: e.validated ? "#3b82f6" : "#5b6b7f",
+                    color: e.validated ? "var(--accent)" : "var(--text-faint)",
                     weight: e.validated ? 3 : 2,
                     dashArray: e.validated ? "10 8" : "4 5",
                     className: e.validated ? "flow-edge" : "flow-edge-slow",
@@ -119,7 +122,7 @@ export default function NetworkMapView() {
             ))}
           </MapContainer>
         </div>
-        <div style={{ width: 320, flexShrink: 0 }}>
+        <div className="side-panel" style={{ width: 320, flexShrink: 0 }}>
           <NodeDetailPanel nodeId={selected} detail={selected ? details[selected] : null} onClose={() => setSelected(null)} />
         </div>
       </div>
